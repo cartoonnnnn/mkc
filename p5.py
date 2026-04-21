@@ -1,4 +1,4 @@
-pip install gensim
+
 #lab 5
 import gensim.downloader as api
 from numpy import dot
