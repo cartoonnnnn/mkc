@@ -1,4 +1,4 @@
-pip install nltk
+
 #lab1
 import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
