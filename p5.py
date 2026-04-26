@@ -1,22 +1,57 @@
+sudo apt update
+sudo apt install neo4j -y
+sudo service neo4j start
+cypher-shell -u neo4j -p neo4j
 
-#lab 5
-import gensim.downloader as api
-from numpy import dot
-from numpy.linalg import norm
+CREATE (:User {UserID:1, Username:'John'}),
+       (:User {UserID:2, Username:'Alice'}),
+       (:User {UserID:3, Username:'Bob'}),
+       (:User {UserID:4, Username:'Emma'}),
+       (:User {UserID:5, Username:'Liam'});
 
-print("Loading pretrained Word2Vec model...")
-m = api.load("word2vec-google-news-300")
-print("Model loaded successfully!")
+CREATE (:Movie {MovieID:1, Title:'Inception'}),
+       (:Movie {MovieID:2, Title:'The Matrix'}),
+       (:Movie {MovieID:3, Title:'Interstellar'}),
+       (:Movie {MovieID:4, Title:'Avatar'}),
+       (:Movie {MovieID:5, Title:'Titanic'});
 
-# similarity function
-sim = lambda a,b: dot(a,b)/(norm(a)*norm(b))
+MATCH (u:User {Username:'John'}), (m:Movie {Title:'Inception'})
+CREATE (u)-[:LIKES]->(m);
 
-# similarities
-print("\nWord Similarity Demonstration\n----------------------------------")
-print(f"Similarity between 'king' and 'queen': {sim(m['king'],m['queen']):.4f}")
-print(f"Similarity between 'king' and 'apple': {sim(m['king'],m['apple']):.4f}")
+MATCH (u:User {Username:'John'}), (m:Movie {Title:'The Matrix'})
+CREATE (u)-[:LIKES]->(m);
 
-# top similar words
-print("\nTop 5 words similar to 'computer':")
-for w,s in m.most_similar("computer", topn=5):
-    print(f"{w} : {s:.4f}")
+MATCH (u:User {Username:'Alice'}), (m:Movie {Title:'Inception'})
+CREATE (u)-[:LIKES]->(m);
+
+MATCH (u:User {Username:'Bob'}), (m:Movie {Title:'The Matrix'})
+CREATE (u)-[:LIKES]->(m);
+
+MATCH (u:User {Username:'Emma'}), (m:Movie {Title:'Inception'})
+CREATE (u)-[:LIKES]->(m);
+
+MATCH (u:User {Username:'Liam'}), (m:Movie {Title:'The Matrix'})
+CREATE (u)-[:LIKES]->(m);
+
+MATCH (u:User {Username:'Liam'}), (m:Movie {Title:'Inception'})
+CREATE (u)-[:LIKES]->(m);
+
+MATCH (:User {Username:'John'})-[:LIKES]->(m:Movie) RETURN m;
+
+MATCH (u:User)-[:LIKES]->(:Movie {Title:'Inception'}) RETURN u;
+
+MATCH (m:Movie) RETURN m ORDER BY m.Title ASC;
+
+MATCH (u:User)-[:LIKES]->(:Movie {Title:'The Matrix'}),
+      (u)-[:LIKES]->(:Movie {Title:'Inception'})
+RETURN u;
+
+MATCH (m:Movie)<-[:LIKES]-(u:User)
+RETURN m, COUNT(u) AS likes
+ORDER BY likes DESC
+LIMIT 1;
+
+MATCH (u:User)-[:LIKES]->(m:Movie)
+RETURN u, COUNT(m) AS totalLikes
+ORDER BY totalLikes DESC
+LIMIT 5;
