@@ -1,39 +1,69 @@
+sudo apt update
+sudo apt install postgresql postgresql-contrib -y
+sudo service postgresql start
+sudo -i -u postgres
+psql
 
-#lab1
-import nltk
-from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+CREATE DATABASE hospital_db;
+\c hospital_db;
 
-nltk.download('punkt', quiet=True)
-nltk.download('punkt_tab', quiet=True)
-nltk.download('stopwords', quiet=True)
-nltk.download('wordnet', quiet=True)
+CREATE TABLE Doctors (
+    DoctorID SERIAL PRIMARY KEY,
+    Name VARCHAR(100),
+    Specialization VARCHAR(100),
+    Experience INT
+);
 
-t1 = "Wednesday Addams joins Nevermore Academy, a school for outcasts with unusual abilities."
-t2 = "She investigates a series of mysterious attacks in the nearby town while uncovering secrets about her family’s past. With her sharp intelligence and dark humor, she solves clues that even the local police struggle to understand."
+CREATE TABLE Patients (
+    PatientID SERIAL PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Gender VARCHAR(10),
+    AdmissionDate DATE,
+    DoctorID INT REFERENCES Doctors(DoctorID)
+);
 
-print("Tokenized Sentence 1 :")
-print(sent_tokenize(t1))
-print("Tokenized Sentence 2 :")
-print(sent_tokenize(t2))
+INSERT INTO Doctors (Name, Specialization, Experience) VALUES
+('Dr. Sharma', 'Cardiology', 10),
+('Dr. Mehta', 'Neurology', 8),
+('Dr. Rao', 'Cardiology', 15);
 
-w1 = word_tokenize(t1)
-w2 = word_tokenize(t2)
+INSERT INTO Patients (Name, Age, Gender, AdmissionDate, DoctorID) VALUES
+('Amit', 25, 'Male', '2024-06-15', 1),
+('Sneha', 40, 'Female', '2024-06-15', 2),
+('Raj', 60, 'Male', '2024-06-14', 1),
+('Priya', 30, 'Female', '2024-06-13', 3);
 
-print("Tokenized Words 1 :")
-print(w1)
-print("Tokenized Words 2 :")
-print(w2)
+SELECT * FROM Patients;
 
-sw = set(stopwords.words('english'))
-fw1 = [w for w in w1 if w.lower() not in sw]
+SELECT * 
+FROM Patients
+WHERE AdmissionDate = '2024-06-15';
 
-print("After STOP WORDS REMOVAL:")
-print(fw1)
+SELECT 
+    CASE 
+        WHEN Age < 18 THEN 'Child'
+        WHEN Age BETWEEN 18 AND 60 THEN 'Adult'
+        ELSE 'Senior'
+    END AS AgeGroup,
+    COUNT(*) AS TotalPatients
+FROM Patients
+GROUP BY AgeGroup;
 
-print("Stemming:")
-print([PorterStemmer().stem(w) for w in fw1])
+UPDATE Patients
+SET Name = 'Rahul'
+WHERE PatientID = 1;
 
-print("Lemmatization:")
-print([WordNetLemmatizer().lemmatize(w) for w in fw1])
+SELECT *
+FROM Doctors
+WHERE Specialization = 'Cardiology';
+
+SELECT d.Name AS DoctorName, COUNT(p.PatientID) AS TotalPatients
+FROM Doctors d
+LEFT JOIN Patients p ON d.DoctorID = p.DoctorID
+GROUP BY d.Name;
+
+SELECT AVG(Experience) AS AvgExperience
+FROM Doctors;
+
+\q
