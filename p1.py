@@ -67,3 +67,4 @@ SELECT AVG(Experience) AS AvgExperience
 FROM Doctors;
 
 \q
+exit
