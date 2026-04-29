@@ -29,18 +29,6 @@ curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb \
 -H "Content-Type: application/json" \
 -d '{"SRN":"4","Sname":"Priya","Degree":"BCA","Sem":6,"CGPA":7.4}'
 
-curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb \
--H "Content-Type: application/json" \
--d '{"SRN":"5","Sname":"Kiran","Degree":"BCom","Sem":4,"CGPA":6.2}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb \
--H "Content-Type: application/json" \
--d '{"SRN":"6","Sname":"Sneha","Degree":"BCA","Sem":1,"CGPA":7.0}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb \
--H "Content-Type: application/json" \
--d '{"SRN":"7","Sname":"Arjun","Degree":"BCA","Sem":5,"CGPA":6.5}'
-
 curl -X GET http://admin:admin123@127.0.0.1:5984/studentdb/_all_docs?include_docs=true
 
 curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb/_find \
