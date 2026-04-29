@@ -3,29 +3,18 @@ sudo apt install couchdb -y
 sudo service couchdb start
 curl -X PUT http://admin:admin123@127.0.0.1:5984/librarydb
 
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
+curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb/_bulk_docs \
 -H "Content-Type: application/json" \
--d '{"ISBN":"101","Title":"The Great Gatsby","Author":"F. Scott Fitzgerald","Genre":"Fiction","PublicationYear":1925,"CopiesAvailable":5,"Rating":4.5}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
--H "Content-Type: application/json" \
--d '{"ISBN":"102","Title":"To Kill a Mockingbird","Author":"Harper Lee","Genre":"Fiction","PublicationYear":1960,"CopiesAvailable":4,"Rating":4.8}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
--H "Content-Type: application/json" \
--d '{"ISBN":"103","Title":"1984","Author":"George Orwell","Genre":"Dystopian","PublicationYear":1949,"CopiesAvailable":6,"Rating":4.7}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
--H "Content-Type: application/json" \
--d '{"ISBN":"104","Title":"Moby Dick","Author":"Herman Melville","Genre":"Fiction","PublicationYear":1851,"CopiesAvailable":3,"Rating":4.0}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
--H "Content-Type: application/json" \
--d '{"ISBN":"105","Title":"The Alchemist","Author":"Paulo Coelho","Genre":"Fiction","PublicationYear":1988,"CopiesAvailable":7,"Rating":4.2}'
-
-curl -X POST http://admin:admin123@127.0.0.1:5984/librarydb \
--H "Content-Type: application/json" \
--d '{"ISBN":"106","Title":"Sapiens","Author":"Yuval Noah Harari","Genre":"Non-Fiction","PublicationYear":2011,"CopiesAvailable":5,"Rating":4.6}'
+-d '{
+  "docs": [
+    {"ISBN":"101","Title":"The Great Gatsby","Author":"F. Scott Fitzgerald","Genre":"Fiction","PublicationYear":1925,"CopiesAvailable":5,"Rating":4.5},
+    {"ISBN":"102","Title":"To Kill a Mockingbird","Author":"Harper Lee","Genre":"Fiction","PublicationYear":1960,"CopiesAvailable":4,"Rating":4.8},
+    {"ISBN":"103","Title":"1984","Author":"George Orwell","Genre":"Dystopian","PublicationYear":1949,"CopiesAvailable":6,"Rating":4.7},
+    {"ISBN":"104","Title":"Moby Dick","Author":"Herman Melville","Genre":"Fiction","PublicationYear":1851,"CopiesAvailable":3,"Rating":4.0},
+    {"ISBN":"105","Title":"The Alchemist","Author":"Paulo Coelho","Genre":"Fiction","PublicationYear":1988,"CopiesAvailable":7,"Rating":4.2},
+    {"ISBN":"106","Title":"Sapiens","Author":"Yuval Noah Harari","Genre":"Non-Fiction","PublicationYear":2011,"CopiesAvailable":5,"Rating":4.6}
+  ]
+}'
 
 curl -X GET http://admin:admin123@127.0.0.1:5984/librarydb/_all_docs?include_docs=true
 
