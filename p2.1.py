@@ -1,3 +1,15 @@
+sudo apt update
+sudo apt install docker.io -y
+sudo service docker start
+docker --version
+
+sudo docker run -d \
+-p 5984:5984 \
+-e COUCHDB_USER=admin \
+-e COUCHDB_PASSWORD=admin123 \
+--name couchdb-container \
+couchdb
+
 curl -X PUT http://admin:admin123@localhost:5984/studentdb
 
 curl -X POST http://admin:admin123@localhost:5984/studentdb/_bulk_docs \
