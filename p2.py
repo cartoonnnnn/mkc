@@ -10,6 +10,7 @@ sudo docker run -d \
 --name couchdb-container \
 couchdb
 
+curl -X PUT http://admin:admin123@127.0.0.1:5984/studentdb
 
 curl -X POST http://admin:admin123@127.0.0.1:5984/studentdb/_bulk_docs \
 -H "Content-Type: application/json" \
