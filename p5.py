@@ -1,5 +1,5 @@
 docker start neo4j-container
-docker ps
+docker exec -it neo4j-container cypher-shell -u neo4j -p password
 
 CREATE (:User {UserID:1, Username:'John'}),
        (:User {UserID:2, Username:'Alice'}),
@@ -27,4 +27,5 @@ MATCH (m:Movie) RETURN m ORDER BY m.Title ASC;
 MATCH (u:User)-[:LIKES]->(:Movie {Title:'The Matrix'}),(u)-[:LIKES]->(:Movie {Title:'Inception'}) RETURN u;
 MATCH (m:Movie)<-[:LIKES]-(u:User) RETURN m, COUNT(u) AS likes ORDER BY likes DESC LIMIT 1;
 MATCH (u:User)-[:LIKES]->(m:Movie) RETURN u, COUNT(m) AS totalLikes ORDER BY totalLikes DESC LIMIT 5;
-EOF
+
+
