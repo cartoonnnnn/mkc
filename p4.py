@@ -1,7 +1,5 @@
-sudo apt update
-sudo apt install neo4j -y
-sudo service neo4j start
-cypher-shell -u neo4j -p neo4j
+docker start neo4j-container || docker run -d -p 7474:7474 -p 7687:7687 --name neo4j-container -e NEO4J_AUTH=neo4j/password neo4j
+docker exec -it neo4j-container cypher-shell -u neo4j -p password
 
 CREATE (:User {UserID:1, Username:'Alice'}),
        (:User {UserID:2, Username:'Bob'}),
